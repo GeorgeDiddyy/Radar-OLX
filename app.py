@@ -11,7 +11,7 @@ ID_CHAT = "8921969479"
 INTERVAL_VERIFICARE = 45 
 
 LISTA_CAUTARI = [
-    "https://www.olx.ro/electronice-si-electrocasnice/telefoane-mobile/arges-judet/q-samsung-sigilat/?currency=RON&search%5Border%5D=created_at:desc&search%5Bfilter_enum_state%5D%5B0%5D=new",
+    "https://www.olx.ro/electronice-si-electrocasnice/telefoane-mobile/arges-judet/q-iphone-18-sigilat/?currency=RON&search%5Bfilter_float_price:to%5D=20000",
     "https://www.olx.ro/electronice-si-electrocasnice/telefoane-mobile/arges-judet/q-iphone-sigilat/?currency=RON&search%5Border%5D=created_at:desc&search%5Bfilter_enum_state%5D%5B0%5D=new"
 ]
 
