@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import time
 import threading
+import os  # <-- AM ADĂUGAT ACEST IMPORT OBLIGATORIU
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 # --- CONFIGURARE TELEGRAMA TA ---
@@ -10,14 +11,14 @@ ID_CHAT = "8921969479"
 INTERVAL_VERIFICARE = 45 
 
 LISTA_CAUTARI = [
-    "https://www.olx.ro/electronice-si-electrocasnice/telefoane-mobile/arges-judet/q-iphone-sigilat/?currency=RON&search%5Border%5D=created_at:desc&search%5Bfilter_float_price:from%5D=1000&search%5Bfilter_float_price:to%5D=20000&search%5Bfilter_enum_state%5D%5B0%5D=new",
-    "https://www.olx.ro/electronice-si-electrocasnice/telefoane-mobile/arges-judet/q-samsung-sigilat/?currency=RON&search%5Border%5D=created_at:desc&search%5Bfilter_float_price:from%5D=200&search%5Bfilter_float_price:to%5D=20000&search%5Bfilter_enum_state%5D%5B0%5D=new"
+    "https://www.olx.ro/electronice-si-electrocasnice/telefoane-mobile/arges-judet/q-samsung-sigilat/?currency=RON&search%5Border%5D=created_at:desc&search%5Bfilter_enum_state%5D%5B0%5D=new",
+    "https://www.olx.ro/electronice-si-electrocasnice/telefoane-mobile/arges-judet/q-iphone-sigilat/?currency=RON&search%5Border%5D=created_at:desc&search%5Bfilter_enum_state%5D%5B0%5D=new"
 ]
 
 anunturi_vechi = set()
 prima_rulare = True
 
-# --- MINI SERVER PENTRU RENDER (REZOLVĂ BLOCAJUL) ---
+# --- SERVER PENTRU RENDER ---
 class HealthCheckServer(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
@@ -26,7 +27,7 @@ class HealthCheckServer(BaseHTTPRequestHandler):
         self.wfile.write(b"Radarul OLX ruleaza!")
 
 def porneste_server_ping():
-    port = int(os.environ.get("PORT", 8080)) if "os" in globals() else 8080
+    port = int(os.environ.get("PORT", 8080))
     server = HTTPServer(("0.0.0.0", port), HealthCheckServer)
     server.serve_forever()
 
@@ -66,7 +67,8 @@ def bucla_radar():
         time.sleep(INTERVAL_VERIFICARE)
         scaneaza_olx()
 
-# Pornim serverul de confirmare într-un fir separat, iar radarul în altul
+# Pornire separată server + radar
 threading.Thread(target=porneste_server_ping, daemon=True).start()
 bucla_radar()
+
 
